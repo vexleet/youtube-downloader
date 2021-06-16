@@ -1,0 +1,8 @@
+{
+  "name": "youtube-downloader",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "21ca3451"
+}
