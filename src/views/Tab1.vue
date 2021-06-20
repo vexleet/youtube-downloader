@@ -1,28 +1,38 @@
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Tab 1</ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Tab 1</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
-      <ExploreContainer name="Tab 1 page" />
+      <ion-searchbar
+          placeholder="Search for a video..."
+          cancel-button-text="Search..."
+          show-clear-button="never"
+          show-cancel-button="focus"
+          @ionCancel="searchVideo"
+      >
+      </ion-searchbar>
+
+      <videos-list></videos-list>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
+<script lang="ts" >
+import { IonPage, IonContent } from '@ionic/vue';
+import { useStore } from 'vuex'
+import VideosList from "../components/VideosList.vue";
 
 export default  {
   name: 'Tab1',
-  components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage }
+  components: {VideosList,  IonContent, IonPage },
+  setup() {
+    const store = useStore()
+
+    const searchVideo = async (e: any) => {
+      e.preventDefault()
+      const query: string = e.target.value
+      await store.dispatch('getVideosByQuery', query)
+    }
+
+    return {searchVideo}
+  }
 }
 </script>

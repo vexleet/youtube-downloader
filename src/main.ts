@@ -1,6 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
+import {state} from "./store";
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import { createStore } from 'vuex'
+
 
 import { IonicVue } from '@ionic/vue';
 
@@ -22,11 +27,36 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import axios from "axios";
+import {mapVideos} from "./utils/mapVideos";
+
+/* Store */
+
+const store = createStore({
+  state,
+  mutations: {
+    addVideos(state, videos) {
+      state.videos = videos
+    }
+  },
+  actions: {
+    getVideosByQuery({commit}, query: string) {
+      const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=15&q=${query}&key=AIzaSyCg93qcqqDxTMADMxTuIFDojeWtLBEWd1w`
+
+      axios.get(endpoint)
+        .then(function (response) {
+          commit('addVideos', mapVideos(response))
+        })
+    }
+  }
+})
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
-  
+  .use(router)
+  .use(store)
+
+
 router.isReady().then(() => {
   app.mount('#app');
 });
