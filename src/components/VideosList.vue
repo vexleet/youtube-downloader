@@ -6,6 +6,7 @@
         :title="video.title"
         :channel-name="video.channelTitle"
         :image="video.image"
+        :video-id="video.videoId"
     >
     </video-item>
   </div>
