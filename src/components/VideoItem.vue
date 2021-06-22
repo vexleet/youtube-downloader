@@ -1,22 +1,33 @@
 <template>
   <ion-card>
-    <img :src="image"/>
+    <img :src="image" />
     <ion-card-header>
       <ion-card-title v-html="title"></ion-card-title>
       <ion-card-subtitle>
-        {{channelName}}
+        {{ channelName }}
       </ion-card-subtitle>
 
-      <ion-button color="primary" size="default" expand="block"  :href="`http://localhost:3000/${videoId}`" download>
+      <ion-button
+        color="primary"
+        size="default"
+        expand="block"
+        :href="`http://localhost:3000/${videoId}`"
+        download
+      >
         Download
       </ion-button>
     </ion-card-header>
-
   </ion-card>
 </template>
 
 <script lang="ts">
-import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonButton } from '@ionic/vue';
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonButton,
+} from "@ionic/vue";
 import axios from "axios";
 
 type VideoItemProps = {
@@ -24,15 +35,21 @@ type VideoItemProps = {
   image: string;
   channelName: string;
   videoId: string;
-}
+};
 
-export default  {
-  name: 'VideoItem',
-  components: {IonCard, IonCardHeader,  IonCardTitle, IonCardSubtitle, IonButton},
+export default {
+  name: "VideoItem",
+  components: {
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonButton,
+  },
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
     },
     image: {
       type: String,
@@ -45,15 +62,15 @@ export default  {
     videoId: {
       type: String,
       required: true,
-    }
+    },
   },
   setup(props: VideoItemProps) {
     const downloadVideo = (videoId: string) => {
-      axios.get(`http://localhost:3000/${videoId}`)
-    }
-    return { ...props, downloadVideo }
-  }
-}
+      axios.get(`http://localhost:3000/${videoId}`);
+    };
+    return { ...props, downloadVideo };
+  },
+};
 </script>
 
 <style scoped>

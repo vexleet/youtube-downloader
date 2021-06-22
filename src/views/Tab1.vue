@@ -2,52 +2,52 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <ion-searchbar
-          placeholder="Search for a video..."
-          cancel-button-text="Search..."
-          show-clear-button="never"
-          show-cancel-button="focus"
-          @ionCancel="searchVideo"
+        placeholder="Search for a video..."
+        cancel-button-text="Search..."
+        show-clear-button="never"
+        show-cancel-button="focus"
+        @ionCancel="searchVideo"
       >
       </ion-searchbar>
 
       <videos-list></videos-list>
 
       <ion-icon
-          class="scroll-to-top"
-          :icon="arrowUpCircle"
-          size="large"
-          type="button"
-          @click="scrollToTop"
+        class="scroll-to-top"
+        :icon="arrowUpCircle"
+        size="large"
+        type="button"
+        @click="scrollToTop"
       ></ion-icon>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts" >
-import { IonPage, IonContent, IonIcon } from '@ionic/vue';
-import { useStore } from 'vuex'
-import {arrowUpCircle} from "ionicons/icons"
+<script lang="ts">
+import { IonPage, IonContent, IonIcon } from "@ionic/vue";
+import { useStore } from "vuex";
+import { arrowUpCircle } from "ionicons/icons";
 import VideosList from "../components/VideosList.vue";
 
-export default  {
-  name: 'Tab1',
-  components: {VideosList,  IonContent, IonPage, IonIcon },
+export default {
+  name: "Tab1",
+  components: { VideosList, IonContent, IonPage, IonIcon },
   setup() {
-    const store = useStore()
+    const store = useStore();
 
     const searchVideo = async (e: any) => {
-      e.preventDefault()
-      const query: string = e.target.value
-      await store.dispatch('getVideosByQuery', query)
-    }
+      e.preventDefault();
+      const query: string = e.target.value;
+      await store.dispatch("getVideosByQuery", query);
+    };
 
     const scrollToTop = () => {
-      document.querySelector('ion-content')?.scrollToTop(500)
-    }
+      document.querySelector("ion-content")?.scrollToTop(500);
+    };
 
-    return {searchVideo, arrowUpCircle, scrollToTop}
-  }
-}
+    return { searchVideo, arrowUpCircle, scrollToTop };
+  },
+};
 </script>
 
 <style scoped>
@@ -55,7 +55,7 @@ export default  {
   position: fixed;
   bottom: 15px;
   right: 15px;
-  font-size: 42px!important;
+  font-size: 42px !important;
   width: 1.2em;
   height: 1.2em;
 }
