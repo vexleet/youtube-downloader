@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import { state } from "./store";
-import "./registerServiceWorker";
+// import "./registerServiceWorker";
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import { createStore } from "vuex";
