@@ -27,27 +27,15 @@ import "@ionic/vue/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import axios from "axios";
-import { mapVideos } from "./utils/mapVideos";
+import { mutations } from "./store/mutations";
+import { actions } from "./store/actions";
 
 /* Store */
 
 const store = createStore({
   state,
-  mutations: {
-    addVideos(state, videos) {
-      state.videos = videos;
-    },
-  },
-  actions: {
-    getVideosByQuery({ commit }, query: string) {
-      const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=15&q=${query}&key=AIzaSyCg93qcqqDxTMADMxTuIFDojeWtLBEWd1w`;
-
-      axios.get(endpoint).then(function (response) {
-        commit("addVideos", mapVideos(response));
-      });
-    },
-  },
+  mutations,
+  actions,
 });
 
 const app = createApp(App).use(IonicVue).use(router).use(store);

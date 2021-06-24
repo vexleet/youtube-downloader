@@ -15,21 +15,13 @@
 <script lang="ts">
 import { useStore } from "vuex";
 import VideoItem from "./VideoItem.vue";
-import { computed, onMounted } from "vue";
-import { File } from "@ionic-native/file/ngx";
-import axios from "axios";
+import { computed } from "vue";
 
 export default {
   name: "VideosList",
   components: { VideoItem },
   setup() {
     const store = useStore();
-
-    onMounted(() => {
-      // const fileTransfer = new FileTransfer();
-      const file = new File();
-      axios;
-    });
 
     return { videos: computed(() => store.state.videos) };
   },
