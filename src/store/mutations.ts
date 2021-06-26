@@ -12,4 +12,10 @@ export const mutations: MutationTree<State> = {
   setCurrentSongId(state, songId: string) {
     state.currentSongId = songId;
   },
+  setCurrentSongHowlerId(state, musicId: string) {
+    state.musicId = musicId;
+  },
+  setCurrentSongIsPaused(state, songIsPaused: boolean) {
+    state.currentSongIsPaused = songIsPaused;
+  },
 };

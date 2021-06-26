@@ -20,6 +20,8 @@
         @click="scrollToTop"
       ></ion-icon>
     </ion-content>
+
+    <music-player-small></music-player-small>
   </ion-page>
 </template>
 
@@ -28,10 +30,11 @@ import { IonPage, IonContent, IonIcon } from "@ionic/vue";
 import { useStore } from "vuex";
 import { arrowUpCircle } from "ionicons/icons";
 import VideosList from "../components/VideosList.vue";
+import MusicPlayerSmall from "../components/MusicPlayerSmall.vue";
 
 export default {
   name: "Tab1",
-  components: { VideosList, IonContent, IonPage, IonIcon },
+  components: { MusicPlayerSmall, VideosList, IonContent, IonPage, IonIcon },
   setup() {
     const store = useStore();
 

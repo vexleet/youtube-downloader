@@ -38,7 +38,6 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
 import {
   IonCard,
   IonCardHeader,
@@ -87,7 +86,6 @@ export default {
     },
   },
   setup(props: VideoItemProps) {
-    const currentSongIsPaused = ref<boolean>(false);
     const store = useStore();
 
     const downloadVideo = (videoId: string) => {
@@ -95,31 +93,36 @@ export default {
     };
 
     const playSong = (songId: string) => {
-      debugger;
       if (songId === store.state.currentSongId) {
-        store.state.currentSong.play();
+        store.state.currentSong.play(store.state.musicId);
+        store.dispatch("pauseResumeCurrentSong", false);
         return;
       }
 
       const sound = new Howl({
         src: `https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3`,
         format: ["mp3"],
-        autoplay: true,
         volume: 0.3,
       });
 
-      sound.once("load", function () {
-        sound.play();
-        store.dispatch("changeCurrentSong", { songHowler: sound, songId });
+      sound.once("play", function () {
+        const musicId = sound.play();
+        store.dispatch("changeCurrentSong", {
+          songHowler: sound,
+          songId,
+          musicId,
+        });
       });
 
       sound.on("pause", function () {
-        console.log(true);
-        currentSongIsPaused.value = true;
+        store.dispatch("pauseResumeCurrentSong", true);
       });
+
+      sound.play();
     };
 
     const pauseSong = () => {
+      console.log(store.state.currentSong);
       store.state.currentSong.pause();
     };
 
@@ -127,7 +130,7 @@ export default {
       ...props,
       playCircle,
       pauseCircle,
-      currentSongIsPaused,
+      currentSongIsPaused: computed(() => store.state.currentSongIsPaused),
       currentSongId: computed(() => store.state.currentSongId),
       downloadVideo,
       playSong,

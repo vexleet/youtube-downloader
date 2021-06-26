@@ -7,6 +7,7 @@ import { Howl } from "howler";
 type ChangeCurrentSongActionType = {
   songHowler: Howl;
   songId: string;
+  musicId: string;
 };
 
 export const actions: ActionTree<State, State> = {
@@ -19,9 +20,14 @@ export const actions: ActionTree<State, State> = {
   },
   changeCurrentSong(
     { commit },
-    { songHowler, songId }: ChangeCurrentSongActionType
+    { songHowler, songId, musicId }: ChangeCurrentSongActionType
   ) {
     commit("setCurrentSong", songHowler);
     commit("setCurrentSongId", songId);
+    commit("setCurrentSongHowlerId", musicId);
+    commit("setCurrentSongIsPaused", false);
+  },
+  pauseResumeCurrentSong({ commit }, songIsPaused: boolean) {
+    commit("setCurrentSongIsPaused", songIsPaused);
   },
 };
