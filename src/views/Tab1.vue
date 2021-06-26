@@ -21,7 +21,7 @@
       ></ion-icon>
     </ion-content>
 
-    <music-player-small></music-player-small>
+    <music-player-small v-if="song"></music-player-small>
   </ion-page>
 </template>
 
@@ -31,6 +31,7 @@ import { useStore } from "vuex";
 import { arrowUpCircle } from "ionicons/icons";
 import VideosList from "../components/VideosList.vue";
 import MusicPlayerSmall from "../components/MusicPlayerSmall.vue";
+import { computed } from "vue";
 
 export default {
   name: "Tab1",
@@ -48,7 +49,12 @@ export default {
       document.querySelector("ion-content")?.scrollToTop(500);
     };
 
-    return { searchVideo, arrowUpCircle, scrollToTop };
+    return {
+      searchVideo,
+      arrowUpCircle,
+      scrollToTop,
+      song: computed(() => store.state.currentSong),
+    };
   },
 };
 </script>

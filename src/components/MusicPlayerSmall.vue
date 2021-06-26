@@ -1,5 +1,13 @@
 <template>
-  <ion-card v-if="song">
+  <ion-card>
+    <ion-range
+      color="primary"
+      min="0"
+      :max="song.duration()"
+      mode="md"
+      :value="currentTime"
+    ></ion-range>
+
     <ion-card-content>
       <div class="song-info">
         <img src="https://i.redd.it/gfyugyna3v961.jpg" />
@@ -39,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { IonCard, IonCardContent, IonIcon } from "@ionic/vue";
+import { IonCard, IonCardContent, IonIcon, IonRange } from "@ionic/vue";
 import {
   playSharp,
   pauseSharp,
@@ -47,7 +55,7 @@ import {
   playSkipForwardSharp,
 } from "ionicons/icons";
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { Howl } from "howler";
 
 export default {
@@ -56,15 +64,32 @@ export default {
     IonCard,
     IonCardContent,
     IonIcon,
+    IonRange,
   },
   setup() {
+    const currentTime = ref<Howl | number>(0);
     const store = useStore();
+
+    function setTimeInterval() {
+      const sound: Howl = store.state.currentSong;
+
+      if (sound) {
+        return setInterval(() => {
+          currentTime.value = sound.seek(store.state.musicId);
+        }, 1000);
+      }
+
+      return 0;
+    }
+
+    let timeInterval: number = setTimeInterval();
 
     const playSong = () => {
       const sound: Howl = store.state.currentSong;
 
       sound.play(store.state.musicId);
       store.dispatch("pauseResumeCurrentSong", false);
+      timeInterval = setTimeInterval();
     };
 
     const pauseSong = () => {
@@ -72,6 +97,7 @@ export default {
 
       sound.pause();
       store.dispatch("pauseResumeCurrentSong", true);
+      clearInterval(timeInterval);
     };
 
     return {
@@ -80,7 +106,8 @@ export default {
       playSkipBackSharp,
       playSkipForwardSharp,
       currentSongIsPaused: computed(() => store.state.currentSongIsPaused),
-      song: computed(() => store.state.currentSong),
+      song: computed<Howl>(() => store.state.currentSong),
+      currentTime: currentTime,
       playSong,
       pauseSong,
     };
@@ -89,6 +116,12 @@ export default {
 </script>
 
 <style scoped>
+ion-range {
+  padding: 0;
+  --knob-size: 0px;
+  --height: 5px;
+}
+
 ion-card-content {
   display: flex;
   justify-content: space-between;
