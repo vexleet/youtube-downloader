@@ -58,6 +58,14 @@ type VideoItemProps = {
   videoId: string;
 };
 
+type SongLink = {
+  thumbnail: string;
+  title: string;
+  songUrl: string;
+  author: string;
+  videoId: string;
+};
+
 export default {
   name: "VideoItem",
   components: {
@@ -88,20 +96,24 @@ export default {
   setup(props: VideoItemProps) {
     const store = useStore();
 
-    const downloadVideo = (videoId: string) => {
-      axios.get(`http://localhost:3000/${videoId}`);
+    const downloadVideo = (songId: string) => {
+      axios.get(`http://localhost:3000/link/${songId}`);
     };
 
-    const playSong = (songId: string) => {
+    const playSong = async (songId: string) => {
       if (songId === store.state.currentSongId) {
         store.state.currentSong.play(store.state.musicId);
         store.dispatch("pauseResumeCurrentSong", false);
         return;
       }
 
+      const song = await axios.get<SongLink>(
+        `http://localhost:3000/link/${songId}`
+      );
+
       const sound = new Howl({
-        src: `https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3`,
-        format: ["mp3"],
+        src: song.data.songUrl,
+        format: ["mp4"],
         volume: 0.3,
       });
 
