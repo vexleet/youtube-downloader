@@ -2,6 +2,7 @@
   <ion-page>
     <ion-content :fullscreen="true">
       <ion-searchbar
+        mode="ios"
         placeholder="Search for a video..."
         cancel-button-text="Search..."
         show-clear-button="never"
@@ -35,7 +36,13 @@ import { computed } from "vue";
 
 export default {
   name: "Tab1",
-  components: { MusicPlayerSmall, VideosList, IonContent, IonPage, IonIcon },
+  components: {
+    MusicPlayerSmall,
+    VideosList,
+    IonContent,
+    IonPage,
+    IonIcon,
+  },
   setup() {
     const store = useStore();
 
